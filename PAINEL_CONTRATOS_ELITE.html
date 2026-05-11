@@ -657,7 +657,7 @@ function openModal(id) {
       <div class="contract-head">
         <span class="contract-type ${cls}">${ct.tipo}</span>
         <span class="contract-file">${pdfFile}</span>
-        ${pdfPath ? `<a class="pdf-link" href="${pdfPath}" title="Abrir contrato">📄 Ver contrato</a>` : ''}
+        ${pdfPath ? `<button class="pdf-link" title="Copiar caminho do PDF" onclick="event.stopPropagation(); copyPath(\`${pdfFile}\`, \`C:\\Users\\gabri\\OneDrive\\Pessoal\\Documentos (1)\\Claude\\Projects\\Contratos ELITE\\${c.pasta}\\${pdfFile}\`)">📄 Copiar caminho</button>` : ''}
       </div>
       
       <div class="contract-summary-block">
@@ -746,6 +746,19 @@ function openModal(id) {
     </div>`;
   document.getElementById('modalBg').classList.add('show');
   document.body.style.overflow = 'hidden';
+}
+
+function copyPath(filename, fullPath) {
+  navigator.clipboard.writeText(fullPath).then(() => {
+    // Show toast
+    const toast = document.createElement('div');
+    toast.textContent = 'Caminho copiado: ' + filename;
+    toast.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1d2541;border:1px solid rgba(212,175,55,0.4);color:#f4cf65;padding:10px 20px;border-radius:8px;font-size:12.5px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.5);pointer-events:none;transition:opacity 0.3s;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
+  }).catch(() => {
+    prompt('Copie o caminho abaixo:', fullPath);
+  });
 }
 
 function closeModal() {
